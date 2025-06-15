@@ -54,7 +54,7 @@ class BankAccount:
         else:
             raise InvalidInputError(" Wrong phone number, check once again.")
 
-    def my_balance(self):
+    def myamount(self):
         """reflecting the leftover balance."""
         return self.balance
 
@@ -75,9 +75,9 @@ def process_user_input(select, account, other_account):
             friend_account_number = input("Enter the 10-digit friend's account number: ")
             if not (friend_account_number.isdigit() and len(friend_account_number) == 10):
                 raise InvalidInputError("Friend's account number must be exactly 10 digits.")
-            Your_amount = float(input("Enter the amount you want to transfer: "))
+            Your_amount = float(input(" How much is Transfer AMOUNT: "))
             account.money_transfer(Your_amount, other_account)
-            print(f"Transferred {Your_amount} to account {friend_account_number}")
+            print(f"amount sent {Your_amount} to your friend {friend_account_number}")
         elif select == '5':
             phone = input("Please enter your phone number: ")
             Your_amount = float(input("Enter amount: "))
@@ -99,9 +99,9 @@ def running_CLI():
     Run = True
     while Run:
         print("\n Menu")
-        print("1. Money deposite")
-        print("2. Money Withdraw")
-        print("3. Check  your Balance")
+        print("1.To deposite your amount")
+        print("2. To take out the money")
+        print("3. To check the amount you have")
         print("4. Money transfer")
         print("5. Mobile Top-Up")
         print("6. Exit The Program")
@@ -130,45 +130,45 @@ class BankGUI:
         self.amount_entry.pack(pady=5)
 
         # Phone Number Entry
-        self.phone_label = tk.Label(master, text="Enter 8-digit Phone Number:")
-        self.phone_label.pack()
+        self.phone = tk.Label(master, text=" 8-digit Phone Number:")
+        self.phone.pack()
         self.phone_entry = tk.Entry(master)
         self.phone_entry.pack(pady=5)
 
-        self.friend_label = tk.Label(master, text="Enter Friend's Account Number:")
-        self.friend_label.pack()
-        self.friend_entry = tk.Entry(master)
-        self.friend_entry.pack(pady=5)        
+        self.friend = tk.Label(master, text=" Friend's Account Number:")
+        self.friend.pack()
+        self.entry_of_friend = tk.Entry(master)
+        self.entry_of_friend.pack(pady=5)        
 
         # Buttons
-        self.deposit_button = tk.Button(master, text="Deposit money", command=self.deposit)
-        self.deposit_button.pack(pady=2)
+        self.deposite = tk.Button(master, text="Deposit money", command=self.deposit)
+        self.deposite.pack(pady=2)
 
-        self.withdraw_button = tk.Button(master, text="Withdraw money", command=self.withdraw)
-        self.withdraw_button.pack(pady=2)
+        self.button_for_withdraw = tk.Button(master, text="Withdraw money", command=self.withdraw)
+        self.button_for_withdraw.pack(pady=2)
 
-        self.transfer_button = tk.Button(master, text="Transfer money", command=self.transfer_to_friend)
-        self.transfer_button.pack(pady=2)
+        self.Botton_for_transfer = tk.Button(master, text="Transfer money", command=self.transfer_to_friend)
+        self.Botton_for_transfer.pack(pady=2)
 
-        self.top_up_button = tk.Button(master, text="Mobile Top-Up", command=self.top_up)
-        self.top_up_button.pack(pady=2)
+        self.button_for_topup = tk.Button(master, text="Mobile Top-Up", command=self.top_up)
+        self.button_for_topup.pack(pady=2)
 
-        self.refresh_button = tk.Button(master, text="view your current Balance", command=self.update_balance)
+        self.refresh_button = tk.Button(master, text="view your current Balance", command=self.show_amount)
         self.refresh_button.pack(pady=2)
 
     def deposit(self):
         try:
             amount = float(self.amount_entry.get())
             self.account.deposit_money(amount)
-            self.update_balance()
+            self.show_amount()
         except Exception as e:
-            messagebox.showerror("it's an error", str(e))
+            messagebox.showerror("it's wrong", str(e))
 
     def withdraw(self):
         try:
             amount = float(self.amount_entry.get())
             self.account.money_withdraw(amount)
-            self.update_balance()
+            self.show_amount()
         except Exception as e:
             messagebox.showerror("it;s an error", str(e))
 
@@ -176,13 +176,13 @@ class BankGUI:
     def transfer_to_friend(self):
         try:
             amount = float(self.amount_entry.get())
-            friend_account_number = self.friend_entry.get()
+            friend_account_number = self.entry_of_friend.get()
             if not (friend_account_number.isdigit() and len(friend_account_number) == 10):
                 raise InvalidInputError("Friend's account number must be exactly 10 digits.")
             self.friend_account = BankAccount("Friend", 1000)
 
             self.account.money_transfer(amount, self.friend_account)
-            self.update_balance()
+            self.show_amount()
             messagebox.showinfo("Successful", f"Transferred {amount} to account {friend_account_number}")
         except Exception as e:
             messagebox.showerror("FAILED! Cannot transfer money", str(e))    
@@ -193,22 +193,22 @@ class BankGUI:
             phone = self.phone_entry.get()
             amount = float(self.amount_entry.get())
             self.account.top_up_mobile(phone, amount)
-            self.update_balance()
+            self.show_amount()
             messagebox.showinfo("Done", f"Your top-up successful for {phone}")
         except Exception as e:
-            messagebox.showerror("Top-Up Failed", str(e))
+            messagebox.showerror("Top-Up does not worked", str(e))
 
-    def update_balance(self):
-        self.balance_label.config(text=f"Balance: {self.account.my_balance():.2f}")
+    def show_amount(self):
+        self.balance_label.config(text=f"remaining money: {self.account.myamount():.2f}")
 
 
 def running_GUI():
-    """ Run the GUI interface."""
+    """start the GUI"""
     root = tk.Tk()
     app = BankGUI(root)
     root.mainloop()
 
-# --------------------- Main Launcher ---------------------
+#  Main Launcher 
 
 if __name__ == "__main__":
     print("Choose app mode:")
